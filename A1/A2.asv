@@ -1,0 +1,96 @@
+clc; clear;
+close all;
+
+load('fe_model.mat')
+
+% 1. Gravity effects for a given axis
+
+% a.
+g = 9.81*1000;
+yShim = 1;
+
+
+
+dirNodes = [4747 10735 13699 16620 19625 22511];
+centerNode = 1305;
+centerDofs = centerNode*6+1:centerNode*6+6;
+
+ndof = size(M, 1);
+
+Fvector = zeros(ndof, 1);
+% accVector = Fvector;
+% 
+% yDof = 2;
+% 
+% 
+% i = yDof;
+% 
+% while i < ndof
+%     accVector(i, 1) = g;
+%     i = i+6;
+% end
+% 
+% Fvector = M*accVector;
+
+[DofN, DofD, ndirNodes] = DofCalculator(dirNodes,ndof);
+
+selectedSupport = 1; % Range 1-6
+uD = zeros(ndirNodes*6, 1);
+uD((selectedSupport-1)*6+2, 1) = yShim;
+
+% i = yDof;
+% while i < size(DofD, 1)
+%     uD(i) = yShim;
+%     i = i+6;
+% end
+
+
+KDD = K(DofD, DofD);
+KNN = K(DofN, DofN);
+KDN = K(DofD, DofN);
+KND = K(DofN, DofD);
+FN = Fvector(DofN);
+
+uN = KNN\(FN-KND*uD);
+
+u = zeros(ndof, 1);
+u(DofN) = uN;
+u(DofD) = uD;
+
+uCentered = u(centerDofs);
+FD = KDD*uD+KDN*uN;
+
+FextD = Fvector(DofD);
+rf = FD - FextD;
+
+uCenteredMemory = zeros(size(uCentered, 1), 6);
+uCenteredMemory(:, 1) = uCentered;
+
+% Second support
+selectedSupport = 2; % Range 1-6
+uD = zeros(ndirNodes*6, 1);
+uD((selectedSupport-1)*6+2, 1) = yShim;
+uN = KNN\(FN-KND*uD);
+
+% Third support
+selectedSupport = 2; % Range 1-6
+uD = zeros(ndirNodes*6, 1);
+uD((selectedSupport-1)*6+2, 1) = yShim;ç
+uN = KNN\(FN-KND*uD);
+
+% Fourth support
+selectedSupport = 2; % Range 1-6
+uD = zeros(ndirNodes*6, 1);
+uD((selectedSupport-1)*6+2, 1) = yShim;
+uN = KNN\(FN-KND*uD);
+
+% Fifth support
+selectedSupport = 2; % Range 1-6
+uD = zeros(ndirNodes*6, 1);
+uD((selectedSupport-1)*6+2, 1) = yShim;
+uN = KNN\(FN-KND*uD);
+
+% Sixth support
+selectedSupport = 2; % Range 1-6
+uD = zeros(ndirNodes*6, 1);
+uD((selectedSupport-1)*6+2, 1) = yShim;
