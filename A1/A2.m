@@ -31,6 +31,6 @@ b = [0
     500e-6
     -200e-6
     0];
-A = uCenteredMemory.';
+A = uCenteredMemory;
 
 X = A\b;

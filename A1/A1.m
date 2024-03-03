@@ -17,7 +17,7 @@ ndof = size(M, 1);
 Fvector = zeros(ndof, 1);
 accVector = Fvector;
 
-selectedDof = 2;
+selectedDof = 3;
 
 i = selectedDof;
 
