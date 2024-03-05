@@ -4,7 +4,7 @@ close all;
 load('fe_model.mat')
 
 % a.
-yShim = 1;
+yShim = -1;
 
 dirNodes = [10735 13699 16620 19625 22511 4747];
 centerNode = 1305;
@@ -43,8 +43,8 @@ b = [0
     0
     0
     500e-6
-    -200e-6
-    0];
+    0
+    -200e-6];
 A = uCenteredMemory;
 
 X = A\b;
