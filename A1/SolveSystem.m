@@ -1,4 +1,4 @@
-function uCentered = SolveSystem(K, DofD, DofN, uD, Fvector, ndof, centerDofs)
+function [uCentered, u] = SolveSystem(K, DofD, DofN, uD, Fvector, ndof, centerDofs)
 
 KDD = K(DofD, DofD);
 KNN = K(DofN, DofN);
