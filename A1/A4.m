@@ -1,3 +1,8 @@
+clc; clear;
+close all;
+
+load('fe_model.mat')
+
 dirNodes = [4747 10735 13699 16620 19625 22511];
 ndof = size(M, 1);
 centerNode = 1305;
@@ -26,7 +31,7 @@ Fvector = M*accVector;
 Fvector(DofD) = [];
 
 fSup = 2000*2*pi;
-omega_vector = 0:100:fSup;
+omega_vector = 0:50:fSup;
 x_center_vector = zeros(length(omega_vector), 1);
 
 for i=1:length(omega_vector)
@@ -38,6 +43,7 @@ for i=1:length(omega_vector)
     m_i_matrix = phi'*M_N*phi;
     omega_i_vector = FREQ;
     damp_ratio = 0.02;
+%     b_i_vector = diag([0.02; 0.02; 0.02; 0.02; 0.02]);
     b_i_vector = diag(2*m_i_matrix*omega_i_vector*damp_ratio);
     
     Q = Q + b_i_vector*omega*1i;
@@ -49,3 +55,22 @@ for i=1:length(omega_vector)
     X_hat_total(DofN) = X_hat;
     x_center_vector(i) = X_hat_total(centerDofs(1));
 end
+
+Mod_X = abs(x_center_vector);
+Angle_X = angle(x_center_vector);
+
+figure 
+hold on
+plot(omega_vector/(2*pi), Mod_X);
+xlabel('Frequency [Hz]')
+ylabel('Amplitude [mm]')
+grid on
+hold off
+
+figure 
+hold on
+plot(omega_vector/(2*pi), -Angle_X);
+xlabel('Frequency [Hz]')
+ylabel('Phase [rad]')
+grid on
+hold off
