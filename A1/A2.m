@@ -6,7 +6,7 @@ load('fe_model.mat')
 % a.
 yShim = 1;
 
-dirNodes = [4747 10735 13699 16620 19625 22511];
+dirNodes = [10735 13699 16620 19625 22511 4747];
 centerNode = 1305;
 centerDofs = centerNode*6-5:centerNode*6;
 
