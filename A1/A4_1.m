@@ -35,9 +35,9 @@ omega_vector = 0:50:fSup;
 Mod_X = zeros(length(omega_vector), neig);
 Angle_X = zeros(length(omega_vector), neig);
 
-for j=1:neig
+
 x_center_vector = zeros(length(omega_vector), 1);
-phi_ind = phi(:,j);
+phi_ind = phi;
     for i=1:length(omega_vector)
         omega = omega_vector(i);
         
@@ -45,7 +45,7 @@ phi_ind = phi(:,j);
         F_xi = phi_ind'*Fvector;
         
         m_i_matrix = phi_ind'*M_N*phi_ind;
-        omega_i_vector = FREQ(j);
+        omega_i_vector = FREQ;
         damp_ratio = 0.02;
     %     b_i_vector = diag([0.02; 0.02; 0.02; 0.02; 0.02]);
         b_i_vector = diag(2*m_i_matrix*omega_i_vector*damp_ratio);
@@ -59,36 +59,26 @@ phi_ind = phi(:,j);
         X_hat_total(DofN) = X_hat;
         x_center_vector(i) = X_hat_total(centerDofs(1));
     end
-    Mod_X(:, j) = abs(x_center_vector);
-    Angle_X(:,j) = angle(x_center_vector);
-end
+    Mod_X = abs(x_center_vector);
+    Angle_X = angle(x_center_vector);
+
 
 
 
 figure 
 hold on
-plot(omega_vector/(2*pi), Mod_X(:, 1));
-plot(omega_vector/(2*pi), Mod_X(:, 2));
-plot(omega_vector/(2*pi), Mod_X(:, 3));
-plot(omega_vector/(2*pi), Mod_X(:, 4));
-plot(omega_vector/(2*pi), Mod_X(:, 5));
+plot(omega_vector/(2*pi), Mod_X);
 xlabel('Frequency [Hz]')
 ylabel('Amplitude [mm]')
 title('Mode amplitude vs force frequency')
-legend('Mode 1', 'Mode 2', 'Mode 3', 'Mode 4', 'Mode 5')
 grid on
 hold off
 
 figure 
 hold on
-plot(omega_vector/(2*pi), Angle_X(:, 1));
-plot(omega_vector/(2*pi), Angle_X(:, 2));
-plot(omega_vector/(2*pi), Angle_X(:, 3));
-plot(omega_vector/(2*pi), Angle_X(:, 4));
-plot(omega_vector/(2*pi), Angle_X(:, 5));
+plot(omega_vector/(2*pi), Angle_X);
 xlabel('Frequency [Hz]')
 ylabel('Phase [rad]')
 title('Mode phase vs force frequency')
-legend('Mode 1', 'Mode 2', 'Mode 3', 'Mode 4', 'Mode 5')
 grid on
 hold off
